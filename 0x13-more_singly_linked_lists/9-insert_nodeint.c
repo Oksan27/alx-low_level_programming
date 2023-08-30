@@ -1,48 +1,46 @@
-#include <stdlib.h>
-#include "lists.h" 
+#include "lists.h"
 
 /**
- * insert_nodeint_at_index - Inserts a new node at a given position in a listint_t list.
- * @head: A pointer to a pointer to the head of the list.
- * @idx: The index at which the new node should be inserted (0-based index).
- * @n: The integer to add to the new node.
- * Return: A pointer to the new node, or NULL if failed.
+ * insert_nodeint_at_index - inserts a new node in a linked list,
+ * at a given position
+ * @head: pointer to the first node in the list
+ * @idx: index where the new node is added
+ * @n: data to insert in the new node
+ *
+ * Return: pointer to the new node, or NULL
  */
 listint_t *insert_nodeint_at_index(listint_t **head, unsigned int idx, int n)
 {
-    if (head == NULL)
-        return NULL;
+	unsigned int i;
+	listint_t *new;
+	listint_t *temp = *head;
 
-    listint_t *new_node = malloc(sizeof(listint_t));
-    if (new_node == NULL)
-    {
-        perror("Memory allocation error");
-        return NULL;
-    }
+	new = malloc(sizeof(listint_t));
+	if (!new || !head)
+		return (NULL);
 
-    new_node->n = n;
+	new->n = n;
+	new->next = NULL;
 
-    if (idx == 0)
-    {
-        new_node->next = *head;
-        *head = new_node;
-        return new_node;
-    }
+	if (idx == 0)
+	{
+		new->next = *head;
+		*head = new;
+		return (new);
+	}
 
-    listint_t *current = *head;
-    for (unsigned int i = 0; i < idx - 1; i++)
-    {
-        if (current == NULL)
-        {
-            free(new_node);
-            return NULL;
-        }
-        current = current->next;
-    }
+	for (i = 0; temp && i < idx; i++)
+	{
+		if (i == idx - 1)
+		{
+			new->next = temp->next;
+			temp->next = new;
+			return (new);
+		}
+		else
+			temp = temp->next;
+	}
 
-    new_node->next = current->next;
-    current->next = new_node;
-
-    return (new_node);
+	return (NULL);
 }
 
